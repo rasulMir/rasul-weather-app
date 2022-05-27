@@ -3,10 +3,27 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { IListItem } from '../types';
 
-const filterDays = (list: IListItem[], num: number): IListItem[] => {
-	const dayDate = list[num].dt_txt.split(' ')[0];
-	console.log(dayDate);
-	return list.filter(i => (i.dt_txt.split(' ')[0] == dayDate));
+const filterDays = (list: IListItem[], num: number): IListItem [] => {
+	const DAYS_ON_DISPLAY: number = 6;
+	const arrDays: IListItem [][] = [];
+	const arrList: IListItem [] = [];
+	let count: number = 0;
+	for (let i = 0; i < DAYS_ON_DISPLAY; i++) {
+		for (let k = count; k < list.length; k++) {
+			count++;
+			const prevDay = list[k].dt_txt.split(' ')[0];
+			const nextDay = !list[k + 1] || list[k + 1].dt_txt.split(' ')[0];
+			if (prevDay !== nextDay) {
+				arrList.push(list[k]);
+				break;
+			}
+			arrList.push(list[k]);
+		}
+		const someArr = [...arrList];
+		arrDays.push(someArr);
+		arrList.length = 0;
+	}
+	return arrDays[num];
 }
 
 interface IOptions {
@@ -61,7 +78,7 @@ const Diagram: React.FC<Props> = ({ list, dayNum }) => {
 			}
 		]);
 		return;
-	}, [ dayNum, list ]);
+	}, [ dayNum ]);
 
 	return(
 		<div>

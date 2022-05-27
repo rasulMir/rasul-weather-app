@@ -22,7 +22,7 @@ const Weather: React.FC = () => {
 	const changeDay = (num: number): void => { setDay(num) };
 
 	if (isError) {
-		return <div>Server Occured! Please Reload Page</div>
+		return <div>Server Occured! Please Reload The Page</div>
 	}
 
 	if (!data && isLoading) {
